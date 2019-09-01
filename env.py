@@ -11,11 +11,7 @@ class DiscreteEnvironment(ABC):
 
     @abstractmethod
     def __init__(self):
-        pass
-
-    @abstractmethod
-    def is_terminal(state):
-        pass        
+        pass       
     
     @abstractmethod
     def step(self,state,action):
@@ -24,6 +20,34 @@ class DiscreteEnvironment(ABC):
     @abstractmethod
     def reset(self):
         pass
+
+
+class Gambler_env(DiscreteEnvironment):
+
+    def __init__(self):
+        self.nstates = 101
+        self.p_h = 0.3
+        self.nactions = 0
+        self.P = {}
+
+        self.rewards = np.zeros(self.nstates)
+        self.rewards[100] = 1
+
+    def step(self,state,action):
+        pass
+
+    def reset(self):
+        pass
+
+    def set_p_h(self,p_h):
+        self.p_h = p_h
+
+        
+
+
+
+
+
     
     
     
@@ -70,24 +94,9 @@ class Grid_1(DiscreteEnvironment):
 
         self.P = P
 
-
-
-    def is_terminal(self,state):
-        x,y = state
-        return (x == 0 and y == 0) or (x == self.size - 1 and y == self.size - 1)
     
     def step(self,state,action):
-        if is_terminal(state):
-            return state, self.reward_terminal
-        
-        
-        next_state = [(np.array(state)+action)]
-        x,y = next_state
-        
-        if x<0 or x >= self.nstates or y<0 or y >= self.nstates:
-            next_state = state
-            
-        return next_state,self.reward_terminal
+        pass
 
     def reset(self):
         pass

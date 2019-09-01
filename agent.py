@@ -168,6 +168,53 @@ class ConfusedAgent(DiscreteAgent):
 		pass
 
 
+class Gambler_ValueIteration(DiscreteAgent):
+
+	def __init__(self,env):
+		super().__init__(env)
+
+		self.p_h = env.p_h
+		self.rewards = env.rewards
+
+	def get_action(self,state):
+		A = np.zeros(self.nstates)
+		possible_bet = range(1,min(state,100-state)+1)
+		# print(self.p_h)
+		for a in possible_bet:
+			A[a] = self.p_h * (self.rewards[state+a]+self.V[state+a]*self.gamma) + (1-self.p_h)*(self.rewards[state-a]+self.V[state-a]*self.gamma)
+		# print(self.rewards)
+		return A
+
+	def update(self):
+		y = []
+		self.V = np.copy(self.V2)
+
+		for s in range(1,self.nstates-1):
+			A = self.get_action(s)
+			best_action_value = np.max(A)
+			self.delta = max(self.delta,np.abs(best_action_value-self.V[s]))
+			self.V2[s] = best_action_value
+		y.append(self.V)
+
+		return y
+
+	def reset(self):
+		self.delta = 0
+
+	def get_policy(self):
+		self.policy = np.zeros(self.nstates-1)
+		for s in range(self.nstates-1):
+			A = self.get_action(s)
+			best_action = np.argmax(A)
+			self.policy[s] = best_action
+
+		return self.policy
+
+	def clear(self):
+		super().clear()
+		self.policy = np.zeros(self.nstates-1)
+		
+
 	
 
 
