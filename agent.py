@@ -3,52 +3,136 @@ import numpy as np
 
 class DiscreteAgent(ABC):
 
-	@abstractmethod
 	def __init__(self,env):
-		pass
+		self.nstates = env.nstates
+		self.nactions = env.nactions
+		self.V = np.zeros(env.nstates)
+		self.V2 = np.zeros(env.nstates)
+		self.policy = np.zeros([env.nstates,env.nactions])
+		self.delta = 0
+		self.gamma = 1
+		self.P = env.P
+		self.threshold = 0.00001
 
 	@abstractmethod
 	def update(self):
 		pass
 
-	@abstractmethod
 	def get_action(self,state):
+		A = np.zeros(self.nactions)
+
+		for a in range(self.nactions):
+			for prob,next_state,reward,terminate in self.P[state][a]:
+				A[a] += prob*(reward+self.gamma*self.V[next_state])
+		return A
+		
+
+	@abstractmethod
+	def reset():
 		pass
+
+	def set_gamma(self,gamma):
+		self.gamma = gamma
+
+	def set_threshold(self,threshold):
+		self.threshold = threshold
+
+	def get_threshold(self):
+		return self.threshold
+
+	def get_delta(self):
+		return self.delta
 
 class PolicyIteration(DiscreteAgent):
 
-	def evaluate_policy(self):
-		pass
+	def __init__(self,env):
+		super().__init__(env)
 
-	def update_policy(self):
+		self.policy = np.ones([self.nstates, self.nactions]) / self.nactions
+
+
+
+	def evaluate_policy(self):
+		self.V2 = np.zeros(self.nstates)
+		self.V = np.zeros(self.nstates)
+		while True:
+			self.delta = 0
+			self.V = np.copy(self.V2)
+
+			for s in range(self.nstates):
+			    v = 0
+
+			    for a, action_prob in enumerate(self.policy[s]):
+			        for  prob, next_state, reward, done in self.P[s][a]:
+			            v += action_prob * prob * (reward + self.gamma * self.V[next_state])
+			    self.delta = max(self.delta, np.abs(v - self.V[s]))
+			    self.V2[s] = v
+
+			if self.delta < self.threshold:
+			    break
+
+		return np.array(self.V)
+
+	def update(self):
+	    policy_stable = True
+	    
+	    for s in range(self.nstates):
+	        
+	        chosen_a = np.argmax(self.policy[s])
+	        
+	        action_values = self.get_action(s)
+	        best_a = np.argmax(action_values)
+	        
+	        if chosen_a != best_a:
+	            policy_stable = False
+	        self.policy[s] = np.eye(self.nactions)[best_a]
+
+	    return policy_stable
+
+
+	
+	
+
+	
+	def reset():
 		pass
 
 
 class ValueIteration(DiscreteAgent):
-	
-	def __init__(self,env):
-		self.nstates = env.nstates
-		self.nactions = env.nactions
-		self.size = env.size
-		self.V = np.zeros(env.nstates)
-		self.delta = 0
-		self.gamma = 1
-		self.P = env.P
 
-	def look(state,V):
+	def get_action(self,state):
 
 		A = np.zeros(self.nactions)
 
 		for a in range(self.nactions):
 			for prob,next_state,reward,terminate in self.P[state][a]:
-				A[a] += prob*(reward+self.gamma*V[next_state])
+				A[a] += prob*(reward+self.gamma*self.V[next_state])
 		return A
 
-	def update(self,env):
-		state_values = new_state_values
-		old_state_values = state_values.copy()
-
+	def update(self):
+		self.V = np.copy(self.V2)
 		for s in range(self.nstates):
-			A = look(s,V)
+			A = self.get_action(s)
+			best_action_value = np.max(A)
+
+			self.delta = max(self.delta,np.abs(best_action_value-self.V[s]))
+
+			self.V2[s] = best_action_value
+
+	def reset(self):
+		self.delta = 0
+
+	def get_policy(self):
+		self.policy = np.zeros([self.nstates,self.nactions])
+		for s in range(self.nstates):
+			A = self.get_action(s)
+			# print(A)
+			best_action = np.argmax(A)
+			self.policy[s,best_action] = 1.0
+
+		return self.policy
+
+	
+
 
 

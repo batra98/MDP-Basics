@@ -38,6 +38,7 @@ class Grid_1(DiscreteEnvironment):
         P = {}
         itr = 0
         temp = [(0 - 1) * np.random.random() for i in range(0,64)]
+        # temp = [-1 for i in range(0,64)]
         # temp[0] = 0
         temp[63] = 0
         for i in range(self.shape[0]):
