@@ -28,7 +28,11 @@ class DiscreteAgent(ABC):
 		
 
 	@abstractmethod
-	def reset():
+	def reset(self):
+		pass
+
+	@abstractmethod
+	def get_policy(self):
 		pass
 
 	def set_gamma(self,gamma):
@@ -42,6 +46,12 @@ class DiscreteAgent(ABC):
 
 	def get_delta(self):
 		return self.delta
+
+	def clear(self):
+		self.V = np.zeros(self.nstates)
+		self.V2 = np.zeros(self.nstates)
+		self.policy = np.zeros([self.nstates,self.nactions])
+		
 
 class PolicyIteration(DiscreteAgent):
 
@@ -91,23 +101,29 @@ class PolicyIteration(DiscreteAgent):
 
 
 	
-	
+	def get_policy(self):
+		return self.policy
 
 	
-	def reset():
+	def reset(self):
 		pass
+
+	def clear(self):
+		super().clear()
+		self.policy = np.ones([self.nstates, self.nactions]) / self.nactions
+
 
 
 class ValueIteration(DiscreteAgent):
 
-	def get_action(self,state):
+	# def get_action(self,state):
 
-		A = np.zeros(self.nactions)
+	# 	A = np.zeros(self.nactions)
 
-		for a in range(self.nactions):
-			for prob,next_state,reward,terminate in self.P[state][a]:
-				A[a] += prob*(reward+self.gamma*self.V[next_state])
-		return A
+	# 	for a in range(self.nactions):
+	# 		for prob,next_state,reward,terminate in self.P[state][a]:
+	# 			A[a] += prob*(reward+self.gamma*self.V[next_state])
+	# 	return A
 
 	def update(self):
 		self.V = np.copy(self.V2)
@@ -131,6 +147,26 @@ class ValueIteration(DiscreteAgent):
 			self.policy[s,best_action] = 1.0
 
 		return self.policy
+
+
+class ConfusedAgent(DiscreteAgent):
+
+	def get_policy(self):
+		self.policy = np.zeros([self.nstates,self.nactions])
+		for s in range(self.nstates):
+			A = self.get_action(s)
+			temp = np.random.randint(low = 0,high = 4)
+			self.policy[s,temp] = 1.0
+			self.V[s] = A[temp]
+
+		return self.policy
+
+	def reset(self):
+		pass
+
+	def update(self):
+		pass
+
 
 	
 

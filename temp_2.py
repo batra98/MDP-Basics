@@ -6,11 +6,12 @@ import matplotlib.pyplot as plt
 Env = env.Grid_1()
 agent_1 = agent.ValueIteration(Env)
 agent_2 = agent.PolicyIteration(Env)
+agent_3 = agent.ConfusedAgent(Env)
 
 
 def plot(Env,policy,V):
 	pp = np.reshape(np.argmax(policy, axis=1), Env.shape)
-	print(pp)
+	# print(pp)
 
 	plt.matshow(np.reshape(V, Env.shape))
 	# plt.arrow(0,0.5,0,-0.7,head_width = 0.1)
@@ -47,7 +48,7 @@ while True:
 # print(np.reshape(agent_1.V,Env.shape))
 print(itr)
 policy = agent_1.get_policy()
-
+print(np.reshape(agent_1.V,Env.shape))
 plot(Env,policy,agent_1.V)
 
 while True:
@@ -59,7 +60,14 @@ while True:
 	if stable == True:
 		break
 
+print(np.reshape(agent_2.V,Env.shape))
 plot(Env,agent_2.policy,agent_2.V)
+
+
+agent_3.get_policy()
+print(np.reshape(agent_3.V,Env.shape))
+plot(Env,agent_3.policy,agent_3.V)
+
 	
 
 
