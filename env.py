@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 import numpy as np
+from scipy.stats import poisson
+
 
 
 UP = 0
@@ -46,6 +48,36 @@ class Gambler_env(DiscreteEnvironment):
 
 
 
+class Jack_env(DiscreteEnvironment):
+
+    def __init__(self):
+        self.max_cars = 20
+        self.max_move = 5
+        self.mu_rent_first_location = 3
+        self.mu_rent_second_location = 4
+        self.mu_return_first_location = 3
+        self.mu_return_second_location = 2
+        self.profit = 10
+        self.loss = 2
+        self.nstates = self.max_cars*self.max_cars
+        self.store_rent_1 = []
+        self.store_rent_2 = []
+        self.store_return_1 = []
+        self.store_return_2 = []
+
+        for i in range(11):
+            self.store_rent_1.append(poisson.pmf(i,self.mu_rent_first_location))
+            self.store_rent_2.append(poisson.pmf(i,self.mu_rent_second_location))
+            self.store_return_1.append(poisson.pmf(i,self.mu_return_first_location))
+            self.store_return_2.append(poisson.pmf(i,self.mu_return_second_location))
+
+        self.actions = np.arange(-self.max_move, self.max_move + 1)
+
+    def step(self,state,action):
+        pass
+
+    def reset(self):
+        pass
 
 
     
