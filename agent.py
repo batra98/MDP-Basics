@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import numpy as np
 
+
 class DiscreteAgent(ABC):
 
 	def __init__(self,env):
@@ -218,7 +219,7 @@ class Gambler_ValueIteration(DiscreteAgent):
 class Jack_PolicyIteration():
 
 	def __init__(self,env):
-		self.limit = 8
+		self.limit = 5
 		self.max_cars = env.max_cars
 		self.V = np.zeros((self.max_cars+1,self.max_cars+1))
 		self.V_2 = np.zeros((self.max_cars+1,self.max_cars+1))
@@ -282,11 +283,11 @@ class Jack_PolicyIteration():
 					self.V[i][j] = next_state_value
 
 			self.delta = abs(self.V_2 - self.V).max()
-			print(self.delta)
+			# print(self.delta)
 			if self.delta < self.threshold:
 				break
 
-		print(self.V)
+		# print(self.V)
 
 	def update(self):
 		policy_stable = True
@@ -309,7 +310,7 @@ class Jack_PolicyIteration():
 				if policy_stable and chosen_a!=new_action:
 					policy_stable = False
 
-		print(self.policy)
+		# print(self.policy)
 	
 		return policy_stable	
 		
