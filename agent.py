@@ -219,7 +219,7 @@ class Gambler_ValueIteration(DiscreteAgent):
 class Jack_PolicyIteration():
 
 	def __init__(self,env):
-		self.limit = 5
+		self.limit = 8
 		self.max_cars = env.max_cars
 		self.V = np.zeros((self.max_cars+1,self.max_cars+1))
 		self.V_2 = np.zeros((self.max_cars+1,self.max_cars+1))
