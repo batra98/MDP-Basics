@@ -313,6 +313,118 @@ class Jack_PolicyIteration():
 		# print(self.policy)
 	
 		return policy_stable	
+
+
+class Jack_PolicyIteration_2():
+	def __init__(self,env):
+		self.limit = 8
+		self.max_cars = env.max_cars
+		self.V = np.zeros((self.max_cars+1,self.max_cars+1))
+		self.V_2 = np.zeros((self.max_cars+1,self.max_cars+1))
+		self.policy = np.zeros(self.V.shape,dtype = np.int)
+		self.delta = 0
+		self.profit = env.profit
+		self.loss = env.loss
+		self.gamma = 0.9
+		self.store_return_1 = env.store_return_1
+		self.store_return_2 = env.store_return_2
+		self.store_rent_1 = env.store_rent_1
+		self.store_rent_2 = env.store_rent_2
+		self.threshold = 0.001
+		self.actions = env.actions
+		self.cost = 4
+
+
+	def get_next_value(self,state,action):
+		value = 0.0
+
+		if action > 0:
+			temp = action-1
+		else:
+			temp = action
+
+		value -= self.loss*abs(temp)
+
+		cars_at_1 = min(state[0]-action,self.max_cars)
+		cars_at_2 = min(state[1]+action,self.max_cars)
+
+		for rent_1 in range(self.limit):
+			for rent_2 in range(self.limit):
+				prob_rent = self.store_rent_1[rent_1]*self.store_rent_2[rent_2]
+
+				present_number_at_1 = cars_at_1
+				present_number_at_2 = cars_at_2
+
+				request_at_1 = min(present_number_at_1,rent_1)
+				request_at_2 = min(present_number_at_2,rent_2)
+
+				reward = (request_at_1+request_at_2)*(self.profit)
+
+				present_number_at_1 -= request_at_1
+				present_number_at_2 -= request_at_2
+				# print(present_number_at_1)
+				for return_1 in range(self.limit):
+					for return_2 in range(self.limit):
+						prob_return = self.store_return_1[return_1]*self.store_return_2[return_2]
+						present_number_at_1_1 = min(present_number_at_1+return_1,self.max_cars)
+						present_number_at_2_1 = min(present_number_at_2+return_2,self.max_cars)
+
+						# print(present_number_at_1)
+
+						if present_number_at_1_1 > 10:
+							reward -= self.cost
+
+						if present_number_at_2_1 > 10:
+							reward -= self.cost
+
+
+						value += (prob_return*prob_rent)*(reward+(self.gamma)*self.V[present_number_at_1_1][present_number_at_2_1])
+
+		return value
+
+
+	def evaluate_policy(self):
+		
+
+		while True:
+			self.delta = 0
+			self.V_2 = self.V.copy()
+			for i in range(self.max_cars+1):
+				for j in range(self.max_cars+1):
+					next_state_value = self.get_next_value([i,j],self.policy[i][j])
+					self.V[i][j] = next_state_value
+
+			self.delta = abs(self.V_2 - self.V).max()
+			# print(self.delta)
+			if self.delta < self.threshold:
+				break
+
+		# print(self.V)
+
+	def update(self):
+		policy_stable = True
+
+		for i in range(self.max_cars+1):
+			for j in range(self.max_cars+1):
+
+				chosen_a = self.policy[i][j]
+				A = []
+
+				for action in self.actions:
+					if (0 <= action <= i) or (-j <= action <= 0):
+						A.append(self.get_next_value([i,j],action))
+					else:
+						A.append(-np.inf)
+
+				new_action = self.actions[np.argmax(A)]
+				self.policy[i][j] = new_action
+
+				if policy_stable and chosen_a!=new_action:
+					policy_stable = False
+
+		# print(self.policy)
+	
+		return policy_stable
 		
 
 	
