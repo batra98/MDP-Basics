@@ -1058,7 +1058,7 @@ when the gambler wins by reaching his goal of $100, or loses by running out of m
 
 ## Part-a
 
-#### The problem can be modelled as a undiscounted, episodic, finite MDP tuple <img src="https://render.githubusercontent.com/render/math?math=<S,A,P,R>"> where:
+#### The problem can be modelled as a undiscounted, episodic, finite MDP tuple < <img src="https://render.githubusercontent.com/render/math?math=\<S,A,P,R"> > where:
 
 1. <img src="https://render.githubusercontent.com/render/math?math=S"> is the set of all possible states of the gambler.
 <p align="center">
@@ -1525,7 +1525,7 @@ and 3 and 2 for returns.
 
 ## Part-a
 
-#### The problem can be modelled as a MDP tuple $<S,A,P,R>$ where :
+#### The problem can be modelled as a MDP tuple < <img src="https://render.githubusercontent.com/render/math?math=S,A,P,R"> > where :
 1. <img src="https://render.githubusercontent.com/render/math?math=S"> is the set of all possible states <img src="https://render.githubusercontent.com/render/math?math=(s_1,s_2)"> where <img src="https://render.githubusercontent.com/render/math?math=s_i"> is the number of cars at location <img src="https://render.githubusercontent.com/render/math?math=i">.
 <p align="center">
 <img src="https://render.githubusercontent.com/render/math?math=S = \big\{ (0,0) \dots (20,20)\big\}">
