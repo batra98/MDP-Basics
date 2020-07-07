@@ -1,9 +1,9 @@
 # MDP Basics and Dynamic Programming Methods
 
 ## Introduction
-In this asignment we will be creating toy environments and map them to MDP based models. We have used dynamic programming and bootstrapping to implement these agents, which learn to navigate through the environment to maximize returns.
+In this asignment we will be creating toy environments and map them to MDP based models (Value Iteration and Policy Iteration). We have used dynamic programming and bootstrapping to implement these agents, which learn to navigate through the environment to maximize returns.
 
-## :Files: File Structure
+## :file_folder: File Structure
 ```bash
 ├── assignment.pdf
 ├── agent.py
@@ -26,10 +26,15 @@ In this asignment we will be creating toy environments and map them to MDP based
 ## Problem-:one: : GridWorld
 
 ### Environment Setting
-* The environment consists of a $8\times8$ grid with the start state as $(0,0)$ and terminal state as $(63,63)$.
-* The reward for reaching the terminal state is $0$ else the reward $r(s,a,s^{'}) \in (0,-1)$.
-* The possible actions in each stae are $\{Up = 0,Right = 1,Down = 2,Left = 3\}$.
-
+<p>
+The environment consists of a <img src="https://render.githubusercontent.com/render/math?math=8\times8"> grid with the start state as <img src="https://render.githubusercontent.com/render/math?math=(0,0)"> and terminal state as <img src="https://render.githubusercontent.com/render/math?math=(63,63)">.
+</p>
+<p>
+The reward for reaching the terminal state is <img src="https://render.githubusercontent.com/render/math?math=0"> else the reward <img src="https://render.githubusercontent.com/render/math?math=r(s,a,s^{'}) \in (0,-1)">.
+</p>
+<p>
+The possible actions in each stae are <img src="https://render.githubusercontent.com/render/math?math=\{Up = 0,Right = 1,Down = 2,Left = 3\}">.
+</p>
 
 ```python
 import env
@@ -143,20 +148,20 @@ plot(Env,policy,agent_1.V)
 ![png](main_files/main_9_1.png)
 
 
-1. In Value Iteration Algorithm, we initialize all the state values with $0$ and apply the Bellman optimality operator until the point of constantcy ($V^{*}$) is reached.
+1. In Value Iteration Algorithm, we initialize all the state values with <img src="https://render.githubusercontent.com/render/math?math=0"> and apply the Bellman optimality operator until the point of constantcy (<img src="https://render.githubusercontent.com/render/math?math=V^{*}">) is reached.
 
-\begin{equation*}
-V_{n+1}(s) = F(V_{n}(s)) = \max_{a \in A(s)}\bigg\{r(s,a) + \gamma \times \sum_{s^{'} \in S}P(s^{'}|s,a)V_{n}(s^{'})\bigg\} \forall s \in S
-\end{equation*}
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=V_{n+1}(s) = F(V_{n}(s)) = \max_{a \in A(s)}\bigg\{r(s,a) + \gamma \times \sum_{s^{'} \in S}P(s^{'}|s,a)V_{n}(s^{'})\bigg\} \forall s \in S">
+</p>
 
 2. We get optimal policy using the following equation.
 
 
-\begin{equation*}
-\pi(s) = \arg\max_{a \in A(s)}\bigg\{r(s,a) + \gamma \times \sum_{s^{'} \in S}P(s^{'}|s,a)V_{n+1}(s^{'})\bigg\} \forall s \in S
-\end{equation*}
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=\pi(s) = \arg\max_{a \in A(s)}\bigg\{r(s,a) + \gamma \times \sum_{s^{'} \in S}P(s^{'}|s,a)V_{n+1}(s^{'})\bigg\} \forall s \in S">
+</p>
 
-3. In the above part we show the final state value vector and the optimal policy for $\gamma = 1$.
+3. In the above part we show the final state value vector and the optimal policy for <img src="https://render.githubusercontent.com/render/math?math=\gamma = 1">.
 
 
 ## Policy-Iteration
@@ -221,17 +226,17 @@ plot(Env,agent_2.policy,agent_2.V)
 1. In this we evaluate the current policy and return the final state value vector.
 2. Evaluation is done using the following equation:-
 
-\begin{equation*}
-V_{n+1}(s) = \max_{a \in A(s)}\bigg\{\pi(a,s) \big\{r(s,a) + \gamma \times \sum_{s^{'} \in S}P(s^{'}|s,a)V_{n}(s^{'})\big\}\bigg\} \forall s \in S
-\end{equation*}
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=V_{n+1}(s) = \max_{a \in A(s)}\bigg\{\pi(a,s) \big\{r(s,a) + \gamma \times \sum_{s^{'} \in S}P(s^{'}|s,a)V_{n}(s^{'})\big\}\bigg\} \forall s \in S">
+</p>
 
 #### Policy updation
 1. We update the our current policy using the final state vector obtained from the policy evaluation step.
 2. Improvement is done as follows:-
 
-\begin{equation*}
-\pi_{k+1}(s) = \arg\max_{a \in A(s)}\bigg\{r(s,a) + \gamma \times \sum_{s^{'} \in S}P(s^{'}|s,a)V_{\pi_{k}}(s^{'})\bigg\}
-\end{equation*}
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=\pi_{k+1}(s) = \arg\max_{a \in A(s)}\bigg\{r(s,a) + \gamma \times \sum_{s^{'} \in S}P(s^{'}|s,a)V_{\pi_{k}}(s^{'})\bigg\}">
+</p>
 
 
 #### In the above part, we show the state value vector and optimal policy for Policy Iteration Algorithm.
@@ -462,11 +467,11 @@ plot_mean_and_CI(mu, high, low, color_mean='b--', color_shading='b')
 * By seeing the above plots we conclude that that the rewards obtained by confused agent may be higher but on an average the confused agent performs poorly than the learned agents.
 * We also observe that the final average state value is same for both value iteration and policy iteration.
 
-## Comparison of different policies with different values of $\gamma$
+## Comparison of different policies with different values of <img src="https://render.githubusercontent.com/render/math?math=\gamma">
 
 ### Value Iteration
 
-### $\gamma = 0$
+### <img src="https://render.githubusercontent.com/render/math?math=\gamma = 0">
 
 
 ```python
@@ -525,7 +530,7 @@ plot(Env,policy,agent_1.V)
 ![png](main_files/main_27_1.png)
 
 
-### $\gamma = 0.1$
+### <img src="https://render.githubusercontent.com/render/math?math=\gamma = 0.1">
 
 
 ```python
@@ -583,7 +588,7 @@ plot(Env,policy,agent_1.V)
 ![png](main_files/main_29_1.png)
 
 
-### $\gamma = 0.5$
+### <img src="https://render.githubusercontent.com/render/math?math=\gamma = 0.5">
 
 
 ```python
@@ -641,7 +646,7 @@ plot(Env,policy,agent_1.V)
 ![png](main_files/main_31_1.png)
 
 
-### $\gamma = 0.75$
+### <img src="https://render.githubusercontent.com/render/math?math=\gamma = 0.75">
 
 
 ```python
@@ -699,7 +704,7 @@ plot(Env,policy,agent_1.V)
 ![png](main_files/main_33_1.png)
 
 
-### $\gamma = 1$
+### <img src="https://render.githubusercontent.com/render/math?math=\gamma = 1">
 
 
 
@@ -763,7 +768,7 @@ plot(Env,policy,agent_1.V)
 
 # Policy Iteration
 
-### $\gamma = 0$
+### <img src="https://render.githubusercontent.com/render/math?math=\gamma = 0">
 
 
 ```python
@@ -818,7 +823,7 @@ plot(Env,agent_2.policy,agent_2.V)
 ![png](main_files/main_38_1.png)
 
 
-### $\gamma = 0.1$
+### <img src="https://render.githubusercontent.com/render/math?math=\gamma = 0.1">
 
 
 
@@ -873,7 +878,7 @@ plot(Env,agent_2.policy,agent_2.V)
 ![png](main_files/main_40_1.png)
 
 
-### $\gamma = 0.5$
+### <img src="https://render.githubusercontent.com/render/math?math=\gamma = 0.5">
 
 
 ```python
@@ -926,7 +931,7 @@ plot(Env,agent_2.policy,agent_2.V)
 ![png](main_files/main_42_1.png)
 
 
-### $\gamma = 0.75$
+### <img src="https://render.githubusercontent.com/render/math?math=\gamma = 0.75">
 
 
 ```python
@@ -979,7 +984,7 @@ plot(Env,agent_2.policy,agent_2.V)
 ![png](main_files/main_44_1.png)
 
 
-### $\gamma = 1$
+### <img src="https://render.githubusercontent.com/render/math?math=\gamma = 1">
 
 
 ```python
@@ -1031,47 +1036,62 @@ plot(Env,agent_2.policy,agent_2.V)
 
 ![png](main_files/main_46_1.png)
 
+<p>
+We observe that different values of <img src="https://render.githubusercontent.com/render/math?math=\gamma"> result in different policies.
+</p>
+<p>
+If value of <img src="https://render.githubusercontent.com/render/math?math=\gamma \to 0">, then the agent focusses on short term gains and acts greedily.
+</p>
+<p>
+If the value of <img src="https://render.githubusercontent.com/render/math?math=\gamma \to 1">, then the agent will put more weight on long term gains and will not act greedily.
+</p>
+<p>
+In our MDP, as <img src="https://render.githubusercontent.com/render/math?math=\gamma \to 1">, we obtain a better policy.
+</p>
 
-* We observe that different values of $\gamma$ result in different policies.
-* If value of $\gamma \to 0$, then the agent focusses on short term gains and acts greedily.
-* If the value of $\gamma \to 1$, then the agent will put more weight on long term gains and will not act greedily.
-* In our MDP, as $\gamma \to 1$, we obtain a better policy.
+# Problem-:three:
 
-# Question- 3
+## Problem Statement: (Sutton and Barto Exercise 4.8 - Value Iteration)
+* A gambler has the opportunity to make bets on the outcomes of a sequence of coin flips. If the coin comes up heads, he wins as many dollars as he has staked on that flip; if it is tails, he loses his stake. The game ends
+when the gambler wins by reaching his goal of $100, or loses by running out of money.
+* On each flip, the gambler must decide what portion of his capital to stake, in integer numbers of dollars.
 
 ## Part-a
 
-#### The problem can be modelled as a MDP tuple $<S,A,P,R>$ where :
-1. $S$ is the set of all possible states of the gambler.
-\begin{equation*}
-S = \big\{\$ 0 \dots \$100\big\}
-\end{equation*}
+#### The problem can be modelled as a undiscounted, episodic, finite MDP tuple <img src="https://render.githubusercontent.com/render/math?math=<S,A,P,R>"> where:
 
-where $S = \$0$ and $S = \$100$ are terminal states.
+1. <img src="https://render.githubusercontent.com/render/math?math=S"> is the set of all possible states of the gambler.
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=S = \big\{\$ 0 \dots \$100\big\}">
+</p>
+<p>
+where $<img src="https://render.githubusercontent.com/render/math?math=S = \$0"> and <img src="https://render.githubusercontent.com/render/math?math=S = \$100"> are terminal states.
+</p>
 
-2. $A$ is the set of all possible bets he can place in a given state $s \in S$.
+2. <img src="https://render.githubusercontent.com/render/math?math=A"> is the set of all possible bets he can place in a given state <img src="https://render.githubusercontent.com/render/math?math=s \in S">.
 
-\begin{equation*}
-A(s) = \big\{1 \dots \min(s,100-s) \big\}
-\end{equation*}
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=A(s) = \big\{1 \dots \min(s,100-s) \big\}">
+</p>
 
-3. $R(s,a,s^{'})$ is 0 if $s^{'} \in \big\{\$ 0 \dots \$99 \big\}$ else 1.
+3. <img src="https://render.githubusercontent.com/render/math?math=R(s,a,s^{'})"> is 0 if <img src="https://render.githubusercontent.com/render/math?math=s^{'} \in \big\{\$ 0 \dots \$99 \big\}"> else 1.
 
-4. Given a state $s$, if the gambler makes a bet of $a \in \big\{1 \dots \min(s,100-s)\big\}$, then $s^{'}$ can be:
-    1. $s+a$ with $P(head)$
-    2. $s-a$ with $1-P(head)$
-\begin{equation*}
-\therefore
-P(s,a,s+a) = P(head)\\
-P(s,a,s-a) = 1-P(head)
-\end{equation*}
+4. Given a state <img src="https://render.githubusercontent.com/render/math?math=s">, if the gambler makes a bet of <img src="https://render.githubusercontent.com/render/math?math=a \in \big\{1 \dots \min(s,100-s)\big\}">, then <img src="https://render.githubusercontent.com/render/math?math=s^{'}"> can be:
+    1. <img src="https://render.githubusercontent.com/render/math?math=s%2Ba"> with <img src="https://render.githubusercontent.com/render/math?math=P(head)">
+    2. <img src="https://render.githubusercontent.com/render/math?math=s-a"> with <img src="https://render.githubusercontent.com/render/math?math=1-P(head)">
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=\therefore">
+<img src="https://render.githubusercontent.com/render/math?math=P(s,a,s%2Ba) = P(head)">
+<br>
+<img src="https://render.githubusercontent.com/render/math?math=P(s,a,s-a) = 1-P(head)">
+</p>
 
 #### Bellman Equation for value iteration
 1. The Bellman Update Equation for this problem will be as follows:
 
-\begin{equation*}
-V_{n+1}(s) = \max_{a \in A(s)}\bigg\{P(head) \times\bigg(r(s+a,a) + \gamma \times V_{n}(s+a)\bigg )+ \big\{1-P(head)\big \} \times\bigg(r(s-a,a) + \gamma \times V_{n}(s-a)\bigg )\bigg\} \forall s \in S
-\end{equation*}
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=V_{n+1}(s) = \max_{a \in A(s)}\bigg\{P(head) \times\bigg(r(s+a,a) + \gamma \times V_{n}(s+a)\bigg )+ \big\{1-P(head)\big \} \times\bigg(r(s-a,a) + \gamma \times V_{n}(s-a)\bigg )\bigg\} \forall s \in S">
+</p>
 
 ## Part-b
 
@@ -1114,9 +1134,12 @@ def plot_fig2(policy):
     
 ```
 
-## Plots showing the iterations of Value Iteration Algorithm and the optimal policy for different values of $P(head)$
+## Plots showing the iterations of Value Iteration Algorithm and the optimal policy for different values of <img src="https://render.githubusercontent.com/render/math?math=P(head)">
 
-### $P(head) = 0.3$
+* The first plots shows the state-value function then gives the probability of winning from each state.
+* The second plots shows the optimal policy , that is a mapping from levels of capital to stakes. 
+
+### <img src="https://render.githubusercontent.com/render/math?math=P(head) = 0.3">
 
 
 ```python
@@ -1190,7 +1213,7 @@ plot_fig2(policy)
 ![png](main_files/main_58_1.png)
 
 
-### $P(head) = 0.15$
+### <img src="https://render.githubusercontent.com/render/math?math=P(head) = 0.15">
 
 
 ```python
@@ -1265,7 +1288,7 @@ plot_fig2(policy)
 ![png](main_files/main_61_1.png)
 
 
-### $P(head) = 0.65$
+### <img src="https://render.githubusercontent.com/render/math?math=P(head) = 0.65">
 
 
 ```python
@@ -1330,8 +1353,9 @@ plot_fig2(policy)
 
 
 ## Part-c
+-  <img src="https://render.githubusercontent.com/render/math?math=\theta">is the convergence threshold parameter in Value Iteration.
 
-### $\theta = 0.00000000000000001$
+### <img src="https://render.githubusercontent.com/render/math?math=\theta = 0.00000000000000001">
 
 
 ```python
@@ -1406,7 +1430,7 @@ plot_fig2(policy)
 ![png](main_files/main_68_1.png)
 
 
-### $\theta = 0.00000000000001$
+### <img src="https://render.githubusercontent.com/render/math?math=\theta = 0.00000000000001">
 
 
 ```python
@@ -1482,50 +1506,64 @@ plot_fig2(policy)
 ![png](main_files/main_71_1.png)
 
 
-1. We see from the above plots that as $\theta \to 0$, the state value matrix and the optimal policy becomes stable for $P(head) = 0.3$
+1. We see from the above plots that as <img src="https://render.githubusercontent.com/render/math?math=\theta \to 0">, the state value matrix and the optimal policy becomes stable for <img src="https://render.githubusercontent.com/render/math?math=P(head) = 0.3">.
 
-# Question-2
+# Problem-:two:
+
+## Problem Statement: (Sutton and Barto Exercise 4.4 - Policy Iteration)
+* Jack manages two locations for a nationwide car rental company. Each day, some number of customers arrive at each location to rent cars. If Jack has a car available, he rents it out and is credited $10 by the national company.
+*  If he is out of cars at that location, then the business is lost. Cars become available for renting the day after they are returned. To help ensure that cars are available where they are needed, Jack can move them between the two locations overnight, at a cost of $2 per car moved.
+*  We assume that the number of cars requested and returned at each location are Poisson random variables, meaning that the probability that the number is n is:
+<p align="center">
+    <img src="https://render.githubusercontent.com/render/math?math=P(n) = \frac{\lambda^n}{n!}e^{-\lambda}">
+</p>
+
+* where <img src="https://render.githubusercontent.com/render/math?math=\lambda"> is the expected number. Suppose <img src="https://render.githubusercontent.com/render/math?math=\lambda"> is 3 and 4 for rental requests at the first and second locations
+and 3 and 2 for returns.
+* To simplify the problem slightly, we assume that there can be no more than 20 cars at each location (any additional cars are returned to the nationwide company, and thus disappear from the problem) and a maximum of five cars can be moved from one location to the other in one night.
+
 
 ## Part-a
 
 #### The problem can be modelled as a MDP tuple $<S,A,P,R>$ where :
-1. $S$ is the set of all possible states $(s_1,s_2)$ where $s_i$ is the number of cars at location $i$.
-\begin{equation*}
-S = \big\{ (0,0) \dots (20,20)\big\}
-\end{equation*}
+1. <img src="https://render.githubusercontent.com/render/math?math=S"> is the set of all possible states <img src="https://render.githubusercontent.com/render/math?math=(s_1,s_2)"> where <img src="https://render.githubusercontent.com/render/math?math=s_i"> is the number of cars at location <img src="https://render.githubusercontent.com/render/math?math=i">.
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=S = \big\{ (0,0) \dots (20,20)\big\}">
+</p>
 
-2. $A$ is the set of all possible movement of cars that can be done given a state $s = (s_1,s_2)$.
+2. <img src="https://render.githubusercontent.com/render/math?math=A"> is the set of all possible movement of cars that can be done given a state <img src="https://render.githubusercontent.com/render/math?math=s = (s_1,s_2)">.
 
-\begin{equation*}
-A(s) = \big\{-min(5,s_2), \dots ,+min(5,s_1)\big\}
-\end{equation*}
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=A(s) = \big\{-min(5,s_2), \dots ,+min(5,s_1)\big\}">
+</p>
 
-3. Let number of cars rented at location 1 and location 2 be $r_1$ and $r_2$ respectively and cars returned be $c_1$ and $c_2$.That is, given $s = (s_1,s_2)$, $s^{'} = (s_1-r_1+r_2+c_1,s_2-r_2+r_1+c_2)$.
+3. Let number of cars rented at location 1 and location 2 be <img src="https://render.githubusercontent.com/render/math?math=r_1"> and <img src="https://render.githubusercontent.com/render/math?math=r_2"> respectively and cars returned be <img src="https://render.githubusercontent.com/render/math?math=c_1"> and <img src="https://render.githubusercontent.com/render/math?math=c_2">.That is, given <img src="https://render.githubusercontent.com/render/math?math=s = (s_1,s_2)$, $s^{'} = (s_1-r_1+r_2+c_1,s_2-r_2+r_1+c_2)">.
 
-4. $\therefore$ $R(s,a,s^{'}) = (r_1+r_2)\times \$10 - (c_1+c_2) \times \$2$. where $r_1,r_2,c_1,c_2$ are sampled from poisson's distribution with $\lambda_{rent1} = 3, \lambda_{rent2} = 4$,$\lambda_{return1} = 3, \lambda_{return2} = 4$.
+4. <img src="https://render.githubusercontent.com/render/math?math=\therefore"> <img src="https://render.githubusercontent.com/render/math?math=R(s,a,s^{'}) = (r_1+r_2)\times \$10 - (c_1+c_2) \times \$2">. where <img src="https://render.githubusercontent.com/render/math?math=r_1,r_2,c_1,c_2"> are sampled from poisson's distribution with <img src="https://render.githubusercontent.com/render/math?math=\lambda_{rent1} = 3, \lambda_{rent2} = 4">,<img src="https://render.githubusercontent.com/render/math?math=\lambda_{return1} = 3, \lambda_{return2} = 4">.
 
-5. Given a state $s$, if number of cars moved are $(c_1,c_2)$ and final state is $s^{'}$, then:
+5. Given a state <img src="https://render.githubusercontent.com/render/math?math=s">, if number of cars moved are <img src="https://render.githubusercontent.com/render/math?math=(c_1,c_2)"> and final state is <img src="https://render.githubusercontent.com/render/math?math=s^{'}">, then:
 
-\begin{equation*}
-    P(s,a,s^{'}) = \frac{\lambda_{return1}^{c_1}}{c_1!}\exp^{-\lambda_{return1}}\times \frac{\lambda_{return2}^{c_2}}{c_2!}\exp^{-\lambda_{return2}}
-\end{equation*}
+<p align="center">
+    <img src="https://render.githubusercontent.com/render/math?math=P(s,a,s^{'}) = \frac{\lambda_{return1}^{c_1}}{c_1!}\exp^{-\lambda_{return1}}\times \frac{\lambda_{return2}^{c_2}}{c_2!}\exp^{-\lambda_{return2}}">
+</p>
 
-### Assumption: I have assumed an upper bound of 8 on the number of cars that can be rented or returned as $P(E) \to 0$ for $E \geq 8$.
+### Assumption: I have assumed an upper bound of 8 on the number of cars that can be rented or returned as <img src="https://render.githubusercontent.com/render/math?math=P(E) \to 0"> for <img src="https://render.githubusercontent.com/render/math?math=E \geq 8">.
 
 #### Bellman Equation for policy iteration
 1. The Bellman Update Equation for this problem will be as follows:
 
     1. Policy evaluation:
-    Let $a$ be the action determined by $\pi$.
+    Let <img src="https://render.githubusercontent.com/render/math?math=a"> be the action determined by <img src="https://render.githubusercontent.com/render/math?math=\pi">.
 
-\begin{equation*}
-V_{n+1}(s) = \pi(a|s) \times \bigg\{ \sum_{rent_1}\sum_{rent_2}\sum_{return_1}\sum_{return_2} P(rent)\times P(return)\times \big\{R(s_1,a,s_2) + \gamma \times V_{n}(s_1,s_2)\big\}\bigg\} \forall (s_1,s_2 )\in S
-\end{equation*}
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=V_{n+1}(s) = \pi(a|s) \times \bigg\{ \sum_{rent_1}\sum_{rent_2}\sum_{return_1}\sum_{return_2} P(rent)\times P(return)\times \big\{R(s_1,a,s_2) + \gamma \times V_{n}(s_1,s_2)\big\}\bigg\} \forall (s_1,s_2 )\in S">
+</p>
+
     2. Policy Improvement:
     
-\begin{equation*}
-\pi_{k+1}(s) = \arg\max_{a \in A} V_{\pi}(s)
-\end{equation*}
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=\pi_{k+1}(s) = \arg\max_{a \in A} V_{\pi}(s)">
+</p>
     
 
 ## Part-b
@@ -1628,6 +1666,15 @@ three_dimentional_plot(agent_1.V)
 
 
 ### Part-c
+
+* One of Jack’s employees at the first location rides a bus home each night
+and lives near the second location. She is happy to shuttle one car to the second location for free.
+* Each additional car still costs $2, as do all cars moved in the other direction. In addition, Jack has limited parking space at each location. If more than 10 cars are kept overnight at a location
+(after any moving of cars), then an additional cost of $4 must be incurred to use a second parking lot (independent of how many cars are kept there).
+* These sorts of non-linearities and arbitrary dynamics often occur in real problems and cannot easily be handled by optimization methods
+other than dynamic programming.
+* Solve the problem incorporating the new complications using
+Policy Iteration.
 
 
 ```python
